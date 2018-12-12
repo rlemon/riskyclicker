@@ -8,7 +8,7 @@ router.get( '/nsfw/:page?', async ( req, res ) => {
 	const hashes = await knex.select( 'hash' ).from( 'images' ).where( 'weight', '<', 0 )
 		.orderBy( 'weight', 'desc' )
 		.limit( 20 )
-		.offset( page * 20 );
+		.offset( Number( page ) * 20 );
 	res.json( hashes );
 } );
 
