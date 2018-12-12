@@ -2,14 +2,14 @@ import http from 'http';
 import express, { Router } from 'express';
 import path from 'path';
 import apiRouter from './routes/api';
-// import knex from './db/connection';
+import websocketApi from './routes/websocket';
 
 const { PORT = 7318, MODE = 'development' } = process.env;
 const app = express();
 const httpServer = http.createServer( app );
 const router = Router();
 router.use( '/api', apiRouter );
-
+websocketApi( httpServer );
 app.use( express.static( path.join( __dirname, 'assets' ) ) );
 app.use( router );
 

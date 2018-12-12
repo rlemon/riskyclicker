@@ -1,3 +1,5 @@
+import websocket from './stores/websocket';
+
 export default function getStores() {
-	return {};
+	return { websocket };
 }

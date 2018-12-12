@@ -1,6 +1,6 @@
 import React from 'react';
 import { observable, action, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import censoredImage from '../censored.png';
 
 function generateImgurId( length ) {
@@ -38,6 +38,7 @@ async function getNextImage() {
 	}
 }
 
+@inject( 'websocket' )
 @observer
 export default class Game extends React.Component {
 	@observable background = null;
@@ -49,6 +50,10 @@ export default class Game extends React.Component {
 	@observable count = 0;
 
 	@observable highscore = 0;
+
+	componentWillMount() {
+		this.props.websocket.connect();
+	}
 
 	componentDidMount() {
 		const savedScore = window.localStorage.getItem( 'highscore' );
@@ -73,19 +78,38 @@ export default class Game extends React.Component {
 	}
 
 	@action changeBackground( url ) {
+		if( this.props.websocket.replay ) {
+			url = `https://i.imgur.com/${this.props.websocket.replay}.png`;
+		}
 		this.background = url;
+		this.props.websocket.replay = null;
 		this.history.push( url );
 	}
 
 	handleSFWClick() {
 		this.setCount( this.count + 1 );
+		try {
+			this.props.websocket.sendMessage( {
+				hash: this.background.match( /\w+(?=\.\w+$)/ )[0],
+				vote: 1
+			} );
+		} catch ( error ) {
+		}
 		this.nextImage();
 	}
 
 	handleNSFWClick() {
 		this.setChanging( true );
+		const hash = this.background.match( /\w+(?=\.\w+$)/ )[0];
 		this.changeBackground( censoredImage );
 		this.setCount( 0 );
+		try {
+			this.props.websocket.sendMessage( {
+				hash,
+				vote: 0
+			} );
+		} catch( error ) {
+		}
 		runInAction( () => {
 			this.history = [];
 		} );
