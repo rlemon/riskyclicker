@@ -122,6 +122,7 @@ export default class Game extends React.Component {
 		this.changeBackground( src );
 		setTimeout( () => {
 			this.setChanging( false );
+			this.bottomElement.scrollIntoView({ behavior: "smooth" });
 		}, 130 ); // offset the css transition.
 	}
 
@@ -134,23 +135,26 @@ export default class Game extends React.Component {
 				<div className='score-container'>
 					<h3>Score: {this.count} <span className='highscore'>{this.highscore}</span></h3>
 					<h4>History</h4>
-					<ul className='history'>
-						{
-							this.history.map( url => (
-								<li
-									key={`historylink-${url}`}
-								>
-									<a
-										href={url}
-										rel='noopener noreferrer'
-										target='_blank'
+					<div className='history-container'>
+						<ul className='history'>
+							{
+								this.history.map( url => (
+									<li
+										key={`historylink-${url}`}
 									>
-										{url.split( '/' ).pop()}
-									</a>
-								</li>
-							) )
-						}
-					</ul>
+										<a
+											href={url}
+											rel='noopener noreferrer'
+											target='_blank'
+										>
+											{url.split( '/' ).pop()}
+										</a>
+									</li>
+								) )
+							}
+						</ul>
+						<div ref={el => this.bottomElement = el}></div>
+					</div>
 				</div>
 				<div
 					className={`image-container ${this.changing ? 'changing' : ''}`}

@@ -43,15 +43,18 @@ a {
 	font-family: 'Rock Salt', cursive;
 }
 
-.history {
-	list-style: none;
+.history-container {
 	height: calc( 100% - 44px );
 	overflow-y: scroll;
 }
 
+.history {
+	list-style: none;
+}
+
 .score-container {
 	padding: 20px;
-	height: 100%;
+	overflow: hidden;
 	grid-area: score;
 	h3 {
 		height: 24px;
