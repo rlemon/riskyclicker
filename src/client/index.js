@@ -7,6 +7,8 @@ import getRoutes from './router';
 
 import './styles/styles.scss';
 
+import './asciisw/film';
+
 // create the app container
 const appContainer = document.createElement( 'div' );
 appContainer.id = 'app-container';

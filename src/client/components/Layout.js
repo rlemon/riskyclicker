@@ -8,6 +8,9 @@ export default function Layout( props ) {
 			<div className='content-wrapper'>
 				{ children }
 			</div>
+			<div className='credits'>
+				<em>2016-2018 :: Sorry 🍁</em>
+			</div>
 		</div>
 	);
 }

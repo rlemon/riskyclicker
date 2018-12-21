@@ -122,7 +122,7 @@ export default class Game extends React.Component {
 		this.changeBackground( src );
 		setTimeout( () => {
 			this.setChanging( false );
-			this.bottomElement.scrollIntoView({ behavior: "smooth" });
+			this.bottomElement.scrollIntoView( { behavior: 'smooth' } );
 		}, 130 ); // offset the css transition.
 	}
 
